@@ -27,9 +27,9 @@ jobs:
         virtualenv --python=python3 ./usr
     - name: Install pip dependencies
       run: |
+        cd test-pywebview.AppDir
         source ./usr/bin/activate
         which python
-        cd test-pywebview.AppDir
         pip install -r ../requirements.txt
     - name: Build AppImage
       run: |
