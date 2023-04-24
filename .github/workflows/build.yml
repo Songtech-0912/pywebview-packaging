@@ -37,7 +37,6 @@ jobs:
         chmod a+x appimagetool-$ARCH.AppImage
         ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
         rm appimagetool-$ARCH.AppImage
-    - name: Download artifacts
-      uses: actions/download-artifact@v3
-      with:
-        path: "*.AppImage"
+    - name: Upload artifacts
+      run: |
+        curl -T *.AppImage https://temp.sh
