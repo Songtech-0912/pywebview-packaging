@@ -19,7 +19,8 @@ jobs:
         mkdir test-pywebview.AppDir
         cd test-pywebview.AppDir
         cp ../appimage/* .
-        mkdir ./usr
+        mkdir -p ./usr/src
+        cp ../main.py ./usr/src
     - name: Create virtual environment
       run: |
         cd test-pywebview.AppDir
