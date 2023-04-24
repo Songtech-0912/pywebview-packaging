@@ -37,7 +37,8 @@ jobs:
         curl -L -o appimagetool-$ARCH.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$ARCH.AppImage
         chmod a+x appimagetool-$ARCH.AppImage
         ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
-        mv test-pywebview-$ARCH.AppImage dist
+        mkdir dist/
+        mv test-pywebview-$ARCH.AppImage dist/
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
