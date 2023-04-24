@@ -21,18 +21,19 @@ jobs:
         mkdir ./usr
     - name: Create virtual environment
       run: |
+        cd test-pywebview.AppDir
         virtualenv --python=python3 ./usr
         source ./usr/bin/activate
         pwd
     - name: Install pip dependencies
       run: |
-        pip install -r ../../requirements.txt
+        cd test-pywebview.AppDir
+        pip install -r ../requirements.txt
     - name: Build AppImage
       run: |
-        cd ..
         export ARCH=$(uname -m)
         curl -L -o appimagetool-$ARCH.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$ARCH.AppImage
-        chmod a+x build/appimagetool-$ARCH.AppImage
+        chmod a+x appimagetool-$ARCH.AppImage
         ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
     - name: Create Release
       uses: ncipollo/release-action@v1
