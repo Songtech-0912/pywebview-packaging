@@ -32,14 +32,12 @@ jobs:
         pip install -r ../requirements.txt
     - name: Build AppImage
       run: |
-        mkdir dist
         export ARCH=$(uname -m)
         curl -L -o appimagetool-$ARCH.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$ARCH.AppImage
         chmod a+x appimagetool-$ARCH.AppImage
         ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
-        mkdir dist/
-        mv test-pywebview-$ARCH.AppImage dist/
+        rm appimagetool-$ARCH.AppImage
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
-        path: "dist/*"
+        path: "*.AppImage"
