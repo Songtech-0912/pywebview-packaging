@@ -21,15 +21,13 @@ jobs:
         cp ../appimage/* .
         mkdir -p ./usr/src
         cp ../main.py ./usr/src
-    - name: Create virtual environment
+    - name: Create virtual environment and install deps
       run: |
         cd test-pywebview.AppDir
         virtualenv --python=python3 ./usr
-    - name: Install pip dependencies
-      run: |
-        cd test-pywebview.AppDir
         source ./usr/bin/activate
-        pip install --system --prefix=/usr --root=test-pywebview.AppDir -r  ../requirements.txt
+        cd ..
+        pip install --prefix=/usr --root=test-pywebview.AppDir -r ./requirements.txt
     - name: Build AppImage
       run: |
         export ARCH=$(uname -m)
