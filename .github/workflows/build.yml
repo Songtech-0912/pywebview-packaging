@@ -7,12 +7,34 @@ jobs:
     steps:
     # Check out repo
     - uses: actions/checkout@master
-    - name: Install dependencies
+    # Install deps
+    - name: Install required deps
       run: |
-        sudo apt install python3 python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-webkit2-4.0 libgirepository1.0-dev libcairo2-dev
-    - uses: AppImageCrafters/build-appimage@master
-      with:
-        recipe: "./appimage/AppImageBuilder.yml"
+        sudo apt update
+        sudo apt install libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev libfuse2
+        python3 -m pip install virtualenv
+    # Create AppDir
+    - name: Create AppDir
+      run: |
+        mkdir test-pywebview.AppDir
+        cd test-pywebview.AppDir
+        cp ../appimage/* .
+        mkdir -p ./usr/src
+        cp ../main.py ./usr/src
+    - name: Create virtual environment and install deps
+      run: |
+        cd test-pywebview.AppDir
+        virtualenv --python=python3 ./usr
+        source ./usr/bin/activate
+        cd ..
+        pip install --prefix=/usr --root=test-pywebview.AppDir -r ./requirements.txt
+    - name: Build AppImage
+      run: |
+        export ARCH=$(uname -m)
+        curl -L -o appimagetool-$ARCH.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$ARCH.AppImage
+        chmod a+x appimagetool-$ARCH.AppImage
+        ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
+        rm appimagetool-$ARCH.AppImage
     - name: Upload artifacts
       run: |
         curl -T *.AppImage https://temp.sh
