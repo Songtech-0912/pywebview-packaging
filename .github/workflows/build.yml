@@ -32,16 +32,13 @@ jobs:
         pip install -r ../requirements.txt
     - name: Build AppImage
       run: |
+        mkdir dist
         export ARCH=$(uname -m)
         curl -L -o appimagetool-$ARCH.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$ARCH.AppImage
         chmod a+x appimagetool-$ARCH.AppImage
         ./appimagetool-$ARCH.AppImage ./test-pywebview.AppDir
-    - name: Create Release
-      uses: ncipollo/release-action@v1
+        mv test-pywebview-$ARCH.AppImage dist
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
       with:
-        allowUpdates: True
-        tag: continuous
-        name: Continuous build
-        prerelease: True
-        artifacts: "test-pywebview-x86_64.AppImage"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        path: "dist/*"
